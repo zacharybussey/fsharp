@@ -1,4 +1,16 @@
-﻿[<EntryPoint>]
-let main argv = 
-    printfn "%A" argv
-    0 // return an integer exit code
+﻿open System
+
+type Schedule = 
+    | Never
+    | Once of DateTime
+    | Repeatedly of DateTime * TimeSpan
+
+let mapSchedule rescheduleFunc schedule =
+    match schedule with
+    | Never -> Never
+    | Once(eventDate) -> Once(rescheduleFunc(eventDate))
+    | Repeatedly(startDate, interval) ->
+        Repeatedly(rescheduleFunc(startDate), interval)
+
+
+ignore(Console.ReadLine())
